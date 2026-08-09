@@ -7,9 +7,17 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
+def parse_channel_id(raw: str) -> int:
+    raw = raw.strip()
+    if raw.startswith("http://") or raw.startswith("https://"):
+        raw = raw.rstrip("/").rsplit("/", 1)[-1]
+    return int(raw)
+
+
 DISCORD_TOKEN = os.environ["DISCORD_TOKEN"]
 GVG_CHANNEL_IDS = {
-    int(channel_id)
+    parse_channel_id(channel_id)
     for channel_id in os.environ.get("GVG_CHANNEL_IDS", "").split(",")
     if channel_id.strip()
 }
